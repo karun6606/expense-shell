@@ -10,6 +10,10 @@ G="\e[32m"
 Y="\e[33m"
 N="\e[0m"
 
+echo "Please enter DB Password:"
+
+read my_sql_root_password
+
 if [ $USERID -ne 0 ]
 then 
     echo "Please run with super user"
@@ -36,5 +40,16 @@ VALIDATE $? "Enabling mysql"
 systemctl start mysqld &>>$LOGFILE
 VALIDATE $? "starting mysql"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
-VALIDATE $? "setting root password"
+#mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
+#VALIDATE $? "setting root password"
+
+#Below command useful for Idemponent in nature 
+
+mysql -h localhost -uroot -p${my_sql_root_password} -e show databses; &>>$LOGFILE 
+if [ $? -ne 0 ]
+then 
+    mysql_secure_installation --set-root-pass ExpenseApp@1 
+else
+    echo "root passworld already set ----$Y SKIPPING $N"
+fi
+
