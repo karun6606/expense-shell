@@ -21,20 +21,20 @@ fi
 VALIDATE() {
     if [ $1 -ne 0 ]
     then
-        echo "$2..... Failure"
+        echo -e "$2.....$R Failure $N"
     else
-        echo "$2..... Sucess"
+        echo "$2..... $G Sucess $N"
     fi
 }
 
-dnf install mysql-server -y
+dnf install mysql-server -y &>>$LOGFILE
 VALIDATE $? "Installation of myql-server"
 
-systemctl enable mysqld
+systemctl enable mysqld &>>$LOGFILE
 VALIDATE $? "Enabling mysql"
 
-systemctl start mysqld
+systemctl start mysqld &>>$LOGFILE
 VALIDATE $? "starting mysql"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1
+mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOGFILE
 VALIDATE $? "setting root password"
