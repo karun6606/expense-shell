@@ -45,10 +45,11 @@ VALIDATE $? "starting mysql"
 
 #Below command useful for Idemponent in nature 
 
-mysql -h 3.84.82.177 -uroot -p${my_sql_root_password} -e show databases; &>>$LOGFILE 
+mysql -h db.hornet78s.online -uroot -p${my_sql_root_password} -e 'show databases;' &>>$LOGFILE 
 if [ $? -ne 0 ]
 then 
-    mysql_secure_installation --set-root-pass ExpenseApp@1 
+    mysql_secure_installation --set-root-pass ${my_sql_root_password}
+    VALIDATE $? "MYSQL Root Password Setup"
 else
     echo -e "root password already set ----$Y SKIPPING $N"
 fi
