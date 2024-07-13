@@ -16,12 +16,8 @@ then
     echo "$2..... Failure"
 else
     echo "$2..... Sucess"
-
+fi
 }
-
-
-
-
 dnf module disable nodejs -y
 VALIDATE $? "Disabled nodejs"
 
