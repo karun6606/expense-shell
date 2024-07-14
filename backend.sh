@@ -53,7 +53,7 @@ unzip /tmp/backend.zip
 npm install
 
 cp 
-C:\devops\daws-78s1\repos\expense-shell\backend.service /etc/systemd/system/backend.service
+C:/devops/daws-78s1/repos/expense-shell/backend.service  /etc/systemd/system/backend.service
 
 systemctl daemon-reload &>>$LOGFILE
 VALIDATE $? "daemon reload"
