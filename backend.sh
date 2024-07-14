@@ -5,6 +5,12 @@ TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | awk -F "." '{print $1F}')
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
+R='\e[31m'
+G='\e[32m'
+Y='\e[33m'
+N='\e[0m'
+
+
 if [ $USERID -ne 0 ]
 then    
     echo "Please run with superuser"
@@ -16,9 +22,9 @@ fi
 VALIDATE() {
 if [ $1 -ne 0 ]
 then
-    echo "$2..... Failure"
+    echo -e  "$2..... $R Failure $N"
 else
-    echo "$2..... Sucess"
+    echo -e "$2..... $G Sucess $N"
 fi
 }
 dnf module disable nodejs -y &>>$LOGFILE
@@ -35,25 +41,25 @@ VALIDATE $? "Installed nodejs"
 id expense
 if [ $? -ne 0 ]
 then
-    useradd expense
+    useradd expense &>>$LOGFILE
 else
-    echo "user already exits..... SKIPPING"
+    echo -e "user already exits..... $Y SKIPPING $N"
 fi
 
-mkdir /app
+mkdir -p /app &>>$LOGFILE
+VALIDATE $? "creating app directory"
 
-curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOGFILE
 
-cd /app
+cd /app &>>$LOGFILE
 
-#rm -rf /tmp/
+rm-rf/app/*
 
 unzip /tmp/backend.zip
 
 npm install
 
-cp 
-C:/devops/daws-78s1/repos/expense-shell/backend.service  /etc/systemd/system/backend.service
+cp /home/ec2-user/expense-shell/backend.service  /etc/systemd/system/backend.service
 
 systemctl daemon-reload &>>$LOGFILE
 VALIDATE $? "daemon reload"
