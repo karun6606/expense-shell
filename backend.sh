@@ -59,9 +59,9 @@ rm -rf /app/*
 
 unzip /tmp/backend.zip
 
-npm install
+npm install &>>$LOGFILE
 
-cp /home/ec2-user/expense-shell/backend.service  /etc/systemd/system/backend.service
+cp /home/ec2-user/expense-shell/backend.service  /etc/systemd/system/backend.service &>>$LOGFILE
 
 systemctl daemon-reload &>>$LOGFILE
 VALIDATE $? "daemon reload"
