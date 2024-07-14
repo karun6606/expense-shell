@@ -10,6 +10,8 @@ G='\e[32m'
 Y='\e[33m'
 N='\e[0m'
 
+echo "please enter DB Password:"
+read mysql_root_password
 
 if [ $USERID -ne 0 ]
 then    
@@ -53,7 +55,7 @@ curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expen
 
 cd /app &>>$LOGFILE
 
-rm-rf/app/*
+rm -rf /app/*
 
 unzip /tmp/backend.zip
 
@@ -73,7 +75,7 @@ VALIDATE $? "enabling backend"
 dnf install mysql -y &>>$LOGFILE
 VALIDATE $? "Installing mysql client"
 
-mysql -h db.hornet78s.online -uroot -pExpenseApp@1 < /app/schema/backend.sql
+mysql -h db.hornet78s.online -uroot -p${mysql_root_password} < /app/schema/backend.sql
 
 systemctl restart backend &>>$LOGFILE
 VALIDATE $? "Restarting backend"
