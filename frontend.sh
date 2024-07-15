@@ -3,7 +3,12 @@
 USERID=$(id -u)
 TIMESTAMP=$(date +F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | awk -F "." '{print 1F}')
-LOGFILE=/tmp/$SCRIPT_NAME-$LOGFILE.log
+LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
+
+R='\e[31m'
+G='\e[32m'
+Y='\e[33m'
+N='\e[0m'
 
 if [ $USERID -ne 0 ]
 then    
@@ -31,7 +36,8 @@ VALIDATE $? "Enabled nginx"
 systemctl start nginx &>>$LOGFILE
 VALIDATE $? "Started nginx"
 
-rm -rf /usr/share/nginx/html/*
+rm -rf /usr/share/nginx/html/* &>>$LOGFILE
+VALIDATE $? "Removing code "
 
 curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip &>>$LOGFILE
 VALIDATE $? "Downloaded frontend code"
@@ -41,7 +47,8 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>$LOGFILE
 VALIDATE $? "Unzipping frontend code"
 
-cp /home/ec2-user/expense-shell/expense.conf /etc/nginx/default.d/expense.conf 
+cp /home/ec2-user/expense-shell/expense.conf /etc/nginx/default.d/expense.conf &>>$LOGFILE
+VALIDATE $? "Copying code"
 
 systemctl restart nginx &>>$LOGFILE
 VALIDATE $? "Restarting nginx"
