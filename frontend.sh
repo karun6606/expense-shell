@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USERID=$(id -u)
-TIMESTAMP=$(date +F-%H-%M-%S)
+TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPT_NAME=$(echo $0 | awk -F "." '{print $1F}')
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
